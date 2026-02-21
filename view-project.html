@@ -13,6 +13,8 @@ const id = params.get("id");
 
 async function loadProject(){
 
+try{
+
 const snap = await getDoc(doc(db,"projects",id));
 
 if(!snap.exists()){
@@ -21,6 +23,9 @@ return;
 }
 
 const p = snap.data();
+
+/* FIX FOR GITHUB PAGES LIVE DEMO */
+const liveURL = "https://pranavreddyedula.github.io/pranav-verse/" + p.live;
 
 document.getElementById("box").innerHTML=`
 <div class="card">
@@ -31,23 +36,37 @@ document.getElementById("box").innerHTML=`
 <img src="${p.image}" style="width:100%;max-width:500px;border-radius:12px;margin:15px 0">
 
 <h3>Project Links</h3>
-<a href="${p.github}" target="_blank"><button>Source Code</button></a>
-<a href="${p.live}" target="_blank"><button>Live Demo</button></a>
+<a href="${p.github}" target="_blank">
+<button>Source Code</button>
+</a>
+
+<a href="${liveURL}" target="_blank">
+<button>Live Demo</button>
+</a>
 
 <h3>Download Documentation</h3>
 <button onclick="downloadPDF()">Download Project Details</button>
 
 <a href="certificate.html?user=${localStorage.getItem('loggedUser') || 'Guest'}&title=${encodeURIComponent(p.title)}">
-<button>Get Certificate</button></a>
+<button>Get Certificate</button>
+</a>
 
 </div>
 `;
 
 window.currentProject = p;
+
+}catch(err){
+document.getElementById("box").innerHTML="<h2>Error loading project</h2>";
+console.log(err);
+}
+
 }
 
 window.downloadPDF = function(){
+
 let p = window.currentProject;
+
 let text = `
 Project : ${p.title}
 
@@ -58,7 +77,7 @@ GitHub:
 ${p.github}
 
 Live Demo:
-${p.live}
+https://pranavreddyedula.github.io/pranav-verse/${p.live}
 
 Created by Edula Sai Pranav Reddy
 `;
@@ -68,6 +87,7 @@ let a=document.createElement('a');
 a.href=URL.createObjectURL(blob);
 a.download=p.title+".txt";
 a.click();
+
 }
 
 loadProject();
