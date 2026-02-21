@@ -2,54 +2,32 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<title>Project</title>
-<link rel="stylesheet" href="style.css">
+<title>Projects</title>
 
 <style>
-body{
-    background:#071a2f;
-    color:white;
-    font-family:Segoe UI;
-}
-header{
-    background:#02142a;
-    padding:18px;
-    font-size:26px;
-}
-.container{
-    width:80%;
-    margin:auto;
-    margin-top:30px;
-}
-.card{
-    background:#031c3a;
-    padding:20px;
-    border-radius:8px;
-}
-.card img{
-    width:100%;
-    max-height:350px;
-    object-fit:cover;
-    border-radius:6px;
-    margin-bottom:15px;
-}
-a{color:#4db3ff}
+body{background:#071a2f;color:white;font-family:Segoe UI}
+header{background:#02142a;padding:18px;font-size:28px}
+.container{width:80%;margin:auto;margin-top:30px}
+#search{width:100%;padding:14px;border-radius:6px;background:#031c3a;color:white;border:none;margin-bottom:25px}
+.card{background:#031c3a;padding:18px;border-radius:8px;margin-bottom:18px}
+button{padding:8px 14px;background:#0a84ff;color:white;border:none;border-radius:6px;cursor:pointer}
 .footer{text-align:center;margin:40px;opacity:.6}
 </style>
 </head>
 
 <body>
 
-<header>Project Details</header>
+<header>Projects</header>
 
-<div class="container" id="box">
-Loading project...
+<div class="container">
+<input id="search" placeholder="Search projects..." oninput="render()">
+<div id="list">Loading projects...</div>
 </div>
 
 <script type="module">
 
 import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
-import { getFirestore, doc, getDoc } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
+import { getFirestore, collection, getDocs } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
 
 const firebaseConfig = {
   apiKey: "AIzaSyDAqqurQ5zb1iWdcnrFJp6XCgNE3YJfYKA",
@@ -63,42 +41,46 @@ const firebaseConfig = {
 const app = initializeApp(firebaseConfig);
 const db = getFirestore(app);
 
-const id = new URLSearchParams(location.search).get("id");
-const box = document.getElementById("box");
+let allProjects = [];
 
-async function loadProject(){
+async function loadProjects(){
+    const snap = await getDocs(collection(db,"projects"));
+    allProjects=[];
 
-    if(!id){
-        box.innerHTML="<h2>Invalid project link</h2>";
-        return;
-    }
+    snap.forEach(doc=>{
+        allProjects.push({
+            id: doc.id, // 🔥 REAL FIRESTORE ID
+            ...doc.data()
+        });
+    });
 
-    const snap = await getDoc(doc(db,"projects",id));
-
-    if(!snap.exists()){
-        box.innerHTML="<h2>Project not found</h2>";
-        return;
-    }
-
-    const p = snap.data();
-
-    box.innerHTML=`
-    <div class="card">
-        <h2>${p.title}</h2>
-        <img src="${p.image || ""}" alt="">
-        <p>${p.description || ""}</p>
-
-        <h3>Links</h3>
-        <a href="${p.github}" target="_blank">Source Code</a><br>
-        <a href="${p.live}" target="_blank">Live Demo</a>
-    </div>`;
+    render();
 }
 
-loadProject();
+window.render = function(){
+    let q=(document.getElementById("search").value||"").toLowerCase();
+    let list=document.getElementById("list");
+    list.innerHTML="";
+
+    allProjects
+    .filter(p=> (p.title||"").toLowerCase().includes(q))
+    .forEach(p=>{
+        list.innerHTML+=`
+        <div class="card">
+            <h3>${p.title}</h3>
+            <p>${p.description||""}</p>
+
+            <a href="view-project.html?id=${encodeURIComponent(p.id)}">
+                <button>Open Project</button>
+            </a>
+        </div>`;
+    });
+}
+
+loadProjects();
 
 </script>
 
 <div class="footer">Created by Edula Sai Pranav Reddy</div>
-
 </body>
 </html>
