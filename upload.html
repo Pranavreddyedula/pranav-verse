@@ -8,41 +8,53 @@
 import { db } from "./js/firebase.js";
 import { collection, addDoc } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
 
-const PASSWORD = "pranav123"; // change this later
-
 window.uploadProject = async function(){
 
-let pass = document.getElementById("pass").value;
-if(pass !== PASSWORD){
-alert("Unauthorized ❌");
+let title = document.getElementById("titleInput").value;
+let description = document.getElementById("descInput").value;
+let github = document.getElementById("githubInput").value;
+let live = document.getElementById("liveInput").value;
+let image = document.getElementById("imageInput").value;
+
+if(!title || !description){
+alert("Please fill required fields");
 return;
 }
-
-let title = titleInput.value;
-let description = descInput.value;
-let github = githubInput.value;
-let live = liveInput.value;
-let image = imageInput.value;
 
 await addDoc(collection(db,"projects"),{
 title,
 description,
 github,
 live,
-image
+image,
+createdBy:"Edula Sai Pranav Reddy",
+time: Date.now()
 });
 
 alert("Project Uploaded Successfully 🚀");
+
+document.getElementById("titleInput").value="";
+document.getElementById("descInput").value="";
+document.getElementById("githubInput").value="";
+document.getElementById("liveInput").value="";
+document.getElementById("imageInput").value="";
 }
 </script>
 </head>
 
 <body>
+
+<!-- 🔐 ADMIN ACCESS PROTECTION -->
+<script>
+if(localStorage.getItem("isAdmin") !== "true"){
+alert("Please login as admin first");
+window.location.href = "login.html";
+}
+</script>
+
 <header>Admin Upload Panel</header>
 
 <div class="container">
-
-<input id="pass" placeholder="Admin Password">
 
 <input id="titleInput" placeholder="Project Title">
 <input id="descInput" placeholder="Description">
@@ -52,8 +64,19 @@ alert("Project Uploaded Successfully 🚀");
 
 <button onclick="uploadProject()">Upload</button>
 
+<br><br>
+<button onclick="logout()">Logout</button>
+
 </div>
 
+<script>
+function logout(){
+localStorage.removeItem("isAdmin");
+location="login.html";
+}
+</script>
+
 <div class="footer">Created by Edula Sai Pranav Reddy</div>
+
 </body>
 </html>
