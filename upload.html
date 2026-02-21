@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>Upload Project - Pranav Verse</title>
+<link rel="stylesheet" href="style.css">
+
+<!-- Firebase SDK -->
+<script type="module">
+
+import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
+import { getFirestore, collection, addDoc } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
+
+const firebaseConfig = {
+  apiKey: "AIzaSyDAqqurQ5zb1iWdcnrFJp6XCgNE3YJfYKA",
+  authDomain: "pranav-verse.firebaseapp.com",
+  projectId: "pranav-verse",
+  storageBucket: "pranav-verse.firebasestorage.app",
+  messagingSenderId: "219763606325",
+  appId: "1:219763606325:web:05178480d6655a3ceec27c"
+};
+
+const app = initializeApp(firebaseConfig);
+const db = getFirestore(app);
+
+window.uploadProject = async function(){
+
+const title = document.getElementById("title").value;
+const description = document.getElementById("desc").value;
+const github = document.getElementById("github").value;
+const live = document.getElementById("live").value;
+const image = document.getElementById("image").value;
+const level = document.getElementById("level").value;
+
+if(!title || !description){
+alert("Fill all required fields");
+return;
+}
+
+await addDoc(collection(db,"projects"),{
+title,
+description,
+github,
+live,
+image,
+level,
+createdBy:"Edula Sai Pranav Reddy",
+createdAt:Date.now()
+});
+
+alert("Project Uploaded Successfully 🚀");
+location.reload();
+
+}
+
+</script>
+</head>
+
+<body>
+
+<header>Upload Project (Admin)</header>
+
+<div class="container">
+
+<input id="title" placeholder="Project Title">
+<input id="level" placeholder="Level (Beginner/Intermediate/Advanced)">
+<textarea id="desc" placeholder="Project Description"></textarea>
+<input id="github" placeholder="GitHub Link">
+<input id="live" placeholder="Live Demo Link">
+<input id="image" placeholder="Image URL">
+
+<button onclick="uploadProject()">Upload Project</button>
+
+</div>
+
+<div class="footer">Created by Edula Sai Pranav Reddy</div>
+
+</body>
+</html>
