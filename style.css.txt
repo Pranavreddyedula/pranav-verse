@@ -1,0 +1,9 @@
+body{font-family:Poppins,Arial;background:#0f172a;color:white;margin:0}
+header{padding:20px;background:#020617;font-size:22px}
+.container{padding:30px}
+.card{background:#020617;padding:20px;margin:15px 0;border-radius:12px}
+input,textarea{width:100%;padding:10px;margin:8px 0;background:#020617;color:white;border:1px solid #333}
+button{padding:10px 20px;background:#6366f1;color:white;border:none;border-radius:8px;margin:5px}
+.hero{text-align:center;padding:80px}
+.footer{text-align:center;margin:40px;color:#aaa}
+pre{background:black;color:#0f0;padding:10px}

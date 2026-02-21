@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>Projects</title>
+<link rel="stylesheet" href="style.css">
+<script src="database.js"></script>
+</head>
+<body>
+<header>Projects</header>
+
+<div class="container">
+<input id="search" placeholder="Search projects" oninput="render()">
+<div id="list"></div>
+</div>
+
+<script>
+let data=getProjects();
+function render(){
+let q=(search.value||'').toLowerCase();
+list.innerHTML='';
+data.filter(p=>p.title.toLowerCase().includes(q))
+.forEach((p,i)=>{
+list.innerHTML+=`<div class=card>
+<h3>${p.title}</h3>
+<p>${p.level}</p>
+<a href="view-project.html?id=${i}">Open</a>
+</div>`;
+});
+}
+render();
+</script>
+
+<div class="footer">Created by Edula Sai Pranav Reddy</div>
+</body>
+</html>

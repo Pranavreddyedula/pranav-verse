@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>Certificate</title>
+<link rel="stylesheet" href="style.css">
+<style>
+.cert{background:white;color:black;padding:40px;text-align:center}
+.signature{font-family:cursive;font-size:32px;margin-top:30px}
+</style>
+</head>
+<body>
+
+<div class="container cert">
+<h1>Certificate of Completion</h1>
+<p>This certifies that</p>
+<h2 id="name"></h2>
+<p>completed project</p>
+<h2 id="project"></h2>
+<p>on PRANAV Verse</p>
+
+<div class="signature">Edula Sai Pranav Reddy</div>
+<p>Founder</p>
+
+<button onclick="window.print()">Download Certificate</button>
+</div>
+
+<script>
+let p=new URLSearchParams(location.search);
+name.innerText=p.get("user");
+project.innerText=p.get("title");
+</script>
+</body>
+</html>

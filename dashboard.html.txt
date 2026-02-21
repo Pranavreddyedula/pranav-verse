@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>Dashboard</title>
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+<header>Dashboard</header>
+
+<div class="container">
+<h2>Welcome <span id="name"></span></h2>
+<a href="projects.html"><button>Browse Projects</button></a>
+<a href="admin.html"><button>Add Project (Admin)</button></a>
+</div>
+
+<script>
+name.innerText=localStorage.getItem("loggedUser");
+</script>
+
+<div class="footer">Created by Edula Sai Pranav Reddy</div>
+</body>
+</html>

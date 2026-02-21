@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>View Project</title>
+<link rel="stylesheet" href="style.css">
+<script src="database.js"></script>
+</head>
+<body>
+<header>Project</header>
+
+<div class="container" id="box"></div>
+
+<script>
+let id=new URLSearchParams(location.search).get('id');
+let p=getProjects()[id];
+
+box.innerHTML=`
+<div class=card>
+<h2>${p.title}</h2>
+<p>${p.desc}</p>
+<b>${p.level}</b>
+<h3>Source Code</h3>
+<pre>${p.code}</pre>
+<h3>Documentation</h3>
+<p>${p.doc}</p>
+<button onclick="downloadPDF()">Download</button>
+<a href="certificate.html?user=${localStorage.getItem('loggedUser')}&title=${encodeURIComponent(p.title)}"><button>Get Certificate</button></a>
+</div>`;
+
+function downloadPDF(){
+let text=`${p.title}\n\n${p.desc}\n\n${p.code}\n\nCreated by Edula Sai Pranav Reddy`;
+let blob=new Blob([text],{type:'text/plain'});
+let a=document.createElement('a');
+a.href=URL.createObjectURL(blob);
+a.download=p.title+".txt";
+a.click();
+}
+</script>
+
+<div class="footer">Created by Edula Sai Pranav Reddy</div>
+</body>
+</html>

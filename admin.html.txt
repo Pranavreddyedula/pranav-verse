@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>Add Project</title>
+<link rel="stylesheet" href="style.css">
+<script src="database.js"></script>
+</head>
+<body>
+<header>Add Project</header>
+
+<div class="container">
+<input id="title" placeholder="Project Title">
+<textarea id="desc" placeholder="Description"></textarea>
+<input id="level" placeholder="Level">
+<textarea id="code" placeholder="Source Code"></textarea>
+<textarea id="doc" placeholder="Documentation"></textarea>
+<button onclick="save()">Save</button>
+</div>
+
+<script>
+function save(){
+addProject({title:title.value,desc:desc.value,level:level.value,code:code.value,doc:doc.value});
+alert("Saved");
+}
+</script>
+
+<div class="footer">Created by Edula Sai Pranav Reddy</div>
+</body>
+</html>

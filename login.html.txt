@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>Login</title>
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+<header>Login</header>
+
+<div class="container">
+<input id="user" placeholder="Username">
+<input id="pass" type="password" placeholder="Password">
+<button onclick="login()">Login</button>
+</div>
+
+<script>
+function login(){
+let u=user.value,p=pass.value;
+if(localStorage.getItem("user_"+u)==p){
+localStorage.setItem("loggedUser",u);
+location="dashboard.html";
+}else alert("Wrong login");
+}
+</script>
+
+<div class="footer">Created by Edula Sai Pranav Reddy</div>
+</body>
+</html>
