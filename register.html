@@ -1,20 +1,28 @@
 <!DOCTYPE html>
 <html>
 <head>
-<title>PRANAV Verse</title>
+<title>Register</title>
 <link rel="stylesheet" href="style.css">
+<script src="database.js"></script>
 </head>
 <body>
-<header>PRANAV Verse</header>
+<header>Register</header>
 
-<section class="hero">
-<h1>Build Real Projects, Not Tutorials</h1>
-<p>A platform where students explore and download real working projects</p>
+<div class="container">
+<input id="user" placeholder="Username">
+<input id="pass" type="password" placeholder="Password">
+<button onclick="register()">Register</button>
+</div>
 
-<a href="./register.html"><button>Start Learning</button></a>
-<a href="./login.html"><button>Login</button></a>
-
-</section>
+<script>
+function register(){
+let u=user.value,p=pass.value;
+if(!u||!p)return alert("Enter details");
+localStorage.setItem("user_"+u,p);
+alert("Registered");
+location="login.html";
+}
+</script>
 
 <div class="footer">Created by Edula Sai Pranav Reddy</div>
 </body>
