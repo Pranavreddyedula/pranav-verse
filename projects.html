@@ -1,11 +1,62 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
+<meta charset="UTF-8">
 <title>Projects</title>
 <link rel="stylesheet" href="style.css">
-<script src="database.js"></script>
+
+<style>
+body{
+    background:#071a2f;
+    color:white;
+    font-family:Segoe UI;
+}
+header{
+    background:#02142a;
+    padding:18px;
+    font-size:28px;
+    font-weight:600;
+}
+.container{
+    width:80%;
+    margin:auto;
+    margin-top:30px;
+}
+#search{
+    width:100%;
+    padding:14px;
+    border:none;
+    outline:none;
+    border-radius:6px;
+    background:#031c3a;
+    color:white;
+    margin-bottom:25px;
+}
+.card{
+    background:#031c3a;
+    padding:18px;
+    border-radius:8px;
+    margin-bottom:18px;
+    transition:.2s;
+}
+.card:hover{
+    transform:scale(1.02);
+    background:#04224a;
+}
+.card a{
+    color:#4db3ff;
+    text-decoration:none;
+}
+.footer{
+    text-align:center;
+    margin:40px;
+    opacity:.6;
+}
+</style>
 </head>
+
 <body>
+
 <header>Projects</header>
 
 <div class="container">
@@ -13,23 +64,57 @@
 <div id="list"></div>
 </div>
 
-<script>
-let data=getProjects();
-function render(){
-let q=(search.value||'').toLowerCase();
-list.innerHTML='';
-data.filter(p=>p.title.toLowerCase().includes(q))
-.forEach((p,i)=>{
-list.innerHTML+=`<div class=card>
-<h3>${p.title}</h3>
-<p>${p.level}</p>
-<a href="view-project.html?id=${i}">Open</a>
-</div>`;
-});
+
+<!-- FIREBASE PROJECT LOADER -->
+<script type="module">
+
+import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
+import { getFirestore, collection, getDocs } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
+
+const firebaseConfig = {
+  apiKey: "AIzaSyDAqqurQ5zb1iWdcnrFJp6XCgNE3YJfYKA",
+  authDomain: "pranav-verse.firebaseapp.com",
+  projectId: "pranav-verse",
+  storageBucket: "pranav-verse.firebasestorage.app",
+  messagingSenderId: "219763606325",
+  appId: "1:219763606325:web:05178480d6655a3ceec27c"
+};
+
+const app = initializeApp(firebaseConfig);
+const db = getFirestore(app);
+
+let allProjects = [];
+
+async function loadProjects(){
+    const snap = await getDocs(collection(db,"projects"));
+    allProjects=[];
+    snap.forEach(doc=> allProjects.push(doc.data()));
+    render();
 }
-render();
+
+window.render = function(){
+    let q=(document.getElementById("search").value||"").toLowerCase();
+    let list=document.getElementById("list");
+    list.innerHTML="";
+
+    allProjects
+    .filter(p=>p.title.toLowerCase().includes(q))
+    .forEach(p=>{
+        list.innerHTML+=`
+        <div class="card">
+            <h3>${p.title}</h3>
+            <p>${p.description}</p>
+            <a href="${p.github}" target="_blank">View Source Code</a><br>
+            <small>${p.live||""}</small>
+        </div>`;
+    });
+}
+
+loadProjects();
+
 </script>
 
 <div class="footer">Created by Edula Sai Pranav Reddy</div>
+
 </body>
 </html>
