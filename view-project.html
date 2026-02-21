@@ -1,17 +1,44 @@
 <!DOCTYPE html>
 <html>
 <head>
-<title>View Project</title>
-<link rel="stylesheet" href="style.css">
+<title>Project Details</title>
+
+<style>
+body{background:#071a2f;color:white;font-family:Segoe UI}
+header{background:#02142a;padding:18px;font-size:28px}
+.container{width:80%;margin:auto;margin-top:30px}
+.card{background:#031c3a;padding:20px;border-radius:12px}
+img{width:100%;max-width:500px;border-radius:12px;margin:15px 0}
+button{padding:8px 14px;background:#0a84ff;color:white;border:none;border-radius:6px;margin:6px;cursor:pointer}
+.footer{text-align:center;margin:40px;opacity:.6}
+</style>
 
 <script type="module">
-import { db } from "./js/firebase.js";
-import { doc, getDoc } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
+
+import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
+import { getFirestore, doc, getDoc } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
+
+const firebaseConfig = {
+  apiKey: "AIzaSyDAqqurQ5zb1iWdcnrFJp6XCgNE3YJfYKA",
+  authDomain: "pranav-verse.firebaseapp.com",
+  projectId: "pranav-verse",
+  storageBucket: "pranav-verse.firebasestorage.app",
+  messagingSenderId: "219763606325",
+  appId: "1:219763606325:web:05178480d6655a3ceec27c"
+};
+
+const app = initializeApp(firebaseConfig);
+const db = getFirestore(app);
 
 const params = new URLSearchParams(window.location.search);
 const id = params.get("id");
 
 async function loadProject(){
+
+if(!id){
+document.getElementById("box").innerHTML="<h2>Invalid project link</h2>";
+return;
+}
 
 const snap = await getDoc(doc(db,"projects",id));
 
@@ -24,61 +51,26 @@ const p = snap.data();
 
 document.getElementById("box").innerHTML=`
 <div class="card">
-
 <h2>${p.title}</h2>
-<p>${p.description}</p>
+<p>${p.description||""}</p>
 
-<img src="${p.image}" style="width:100%;max-width:500px;border-radius:12px;margin:15px 0">
+${p.image ? `<img src="${p.image}">` : ""}
 
-<h3>Project Links</h3>
-<a href="${p.github}" target="_blank"><button>Source Code</button></a>
-<a href="${p.live}" target="_blank"><button>Live Demo</button></a>
-
-<h3>Download Documentation</h3>
-<button onclick="downloadPDF()">Download Project Details</button>
-
-<a href="certificate.html?user=${localStorage.getItem('loggedUser') || 'Guest'}&title=${encodeURIComponent(p.title)}">
-<button>Get Certificate</button></a>
-
+<br>
+<a href="${p.github||"#"}" target="_blank"><button>Source Code</button></a>
 </div>
 `;
-
-window.currentProject = p;
-}
-
-window.downloadPDF = function(){
-let p = window.currentProject;
-let text = `
-Project : ${p.title}
-
-Description:
-${p.description}
-
-GitHub:
-${p.github}
-
-Live Demo:
-${p.live}
-
-Created by Edula Sai Pranav Reddy
-`;
-
-let blob=new Blob([text],{type:'text/plain'});
-let a=document.createElement('a');
-a.href=URL.createObjectURL(blob);
-a.download=p.title+".txt";
-a.click();
 }
 
 loadProject();
+
 </script>
 </head>
 
 <body>
 
-<header>Project</header>
+<header>Project Details</header>
 <div class="container" id="box">Loading project...</div>
-
 <div class="footer">Created by Edula Sai Pranav Reddy</div>
 
 </body>
