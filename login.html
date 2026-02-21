@@ -1,25 +1,29 @@
 <!DOCTYPE html>
 <html>
 <head>
-<title>Login</title>
+<title>Admin Login</title>
 <link rel="stylesheet" href="style.css">
 </head>
 <body>
-<header>Login</header>
+<header>Admin Login</header>
 
 <div class="container">
-<input id="user" placeholder="Username">
-<input id="pass" type="password" placeholder="Password">
+<input id="pass" type="password" placeholder="Enter Admin Password">
 <button onclick="login()">Login</button>
 </div>
 
 <script>
+const ADMIN_PASSWORD = "pranav123"; // change later
+
 function login(){
-let u=user.value,p=pass.value;
-if(localStorage.getItem("user_"+u)==p){
-localStorage.setItem("loggedUser",u);
-location="dashboard.html";
-}else alert("Wrong login");
+let p = pass.value;
+
+if(p === ADMIN_PASSWORD){
+localStorage.setItem("isAdmin","true");
+location="upload.html";
+}else{
+alert("Wrong Admin Password");
+}
 }
 </script>
 
