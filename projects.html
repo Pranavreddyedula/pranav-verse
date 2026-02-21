@@ -47,6 +47,18 @@ header{
     color:#4db3ff;
     text-decoration:none;
 }
+button{
+    padding:8px 14px;
+    margin-top:10px;
+    border:none;
+    border-radius:6px;
+    background:#0a84ff;
+    color:white;
+    cursor:pointer;
+}
+button:hover{
+    background:#1a94ff;
+}
 .footer{
     text-align:center;
     margin:40px;
@@ -60,10 +72,9 @@ header{
 <header>Projects</header>
 
 <div class="container">
-<input id="search" placeholder="Search projects" oninput="render()">
-<div id="list"></div>
+<input id="search" placeholder="Search projects (AI, Web, Python...)" oninput="render()">
+<div id="list">Loading projects...</div>
 </div>
-
 
 <!-- FIREBASE PROJECT LOADER -->
 <script type="module">
@@ -87,8 +98,15 @@ let allProjects = [];
 
 async function loadProjects(){
     const snap = await getDocs(collection(db,"projects"));
+
     allProjects=[];
-    snap.forEach(doc=> allProjects.push(doc.data()));
+    snap.forEach(d=>{
+        allProjects.push({
+            id:d.id,
+            ...d.data()
+        });
+    });
+
     render();
 }
 
@@ -97,15 +115,25 @@ window.render = function(){
     let list=document.getElementById("list");
     list.innerHTML="";
 
-    allProjects
-    .filter(p=>p.title.toLowerCase().includes(q))
-    .forEach(p=>{
+    const filtered = allProjects.filter(p=>p.title.toLowerCase().includes(q));
+
+    if(filtered.length===0){
+        list.innerHTML="<p>No projects found</p>";
+        return;
+    }
+
+    filtered.forEach(p=>{
         list.innerHTML+=`
         <div class="card">
             <h3>${p.title}</h3>
-            <p>${p.description}</p>
-            <a href="${p.github}" target="_blank">View Source Code</a><br>
-            <small>${p.live||""}</small>
+            <p>${p.description || ""}</p>
+
+            <a href="view-project.html?id=${p.id}">
+                <button>Open Project</button>
+            </a>
+
+            <br><br>
+            <a href="${p.github}" target="_blank">Source Code</a>
         </div>`;
     });
 }
