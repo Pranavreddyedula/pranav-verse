@@ -3,40 +3,83 @@
 <head>
 <title>View Project</title>
 <link rel="stylesheet" href="style.css">
-<script src="database.js"></script>
-</head>
-<body>
-<header>Project</header>
 
-<div class="container" id="box"></div>
+<script type="module">
+import { db } from "./js/firebase.js";
+import { doc, getDoc } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
 
-<script>
-let id=new URLSearchParams(location.search).get('id');
-let p=getProjects()[id];
+const params = new URLSearchParams(window.location.search);
+const id = params.get("id");
 
-box.innerHTML=`
-<div class=card>
+async function loadProject(){
+
+const snap = await getDoc(doc(db,"projects",id));
+
+if(!snap.exists()){
+document.getElementById("box").innerHTML="<h2>Project not found</h2>";
+return;
+}
+
+const p = snap.data();
+
+document.getElementById("box").innerHTML=`
+<div class="card">
+
 <h2>${p.title}</h2>
-<p>${p.desc}</p>
-<b>${p.level}</b>
-<h3>Source Code</h3>
-<pre>${p.code}</pre>
-<h3>Documentation</h3>
-<p>${p.doc}</p>
-<button onclick="downloadPDF()">Download</button>
-<a href="certificate.html?user=${localStorage.getItem('loggedUser')}&title=${encodeURIComponent(p.title)}"><button>Get Certificate</button></a>
-</div>`;
+<p>${p.description}</p>
 
-function downloadPDF(){
-let text=`${p.title}\n\n${p.desc}\n\n${p.code}\n\nCreated by Edula Sai Pranav Reddy`;
+<img src="${p.image}" style="width:100%;max-width:500px;border-radius:12px;margin:15px 0">
+
+<h3>Project Links</h3>
+<a href="${p.github}" target="_blank"><button>Source Code</button></a>
+<a href="${p.live}" target="_blank"><button>Live Demo</button></a>
+
+<h3>Download Documentation</h3>
+<button onclick="downloadPDF()">Download Project Details</button>
+
+<a href="certificate.html?user=${localStorage.getItem('loggedUser') || 'Guest'}&title=${encodeURIComponent(p.title)}">
+<button>Get Certificate</button></a>
+
+</div>
+`;
+
+window.currentProject = p;
+}
+
+window.downloadPDF = function(){
+let p = window.currentProject;
+let text = `
+Project : ${p.title}
+
+Description:
+${p.description}
+
+GitHub:
+${p.github}
+
+Live Demo:
+${p.live}
+
+Created by Edula Sai Pranav Reddy
+`;
+
 let blob=new Blob([text],{type:'text/plain'});
 let a=document.createElement('a');
 a.href=URL.createObjectURL(blob);
 a.download=p.title+".txt";
 a.click();
 }
+
+loadProject();
 </script>
+</head>
+
+<body>
+
+<header>Project</header>
+<div class="container" id="box">Loading project...</div>
 
 <div class="footer">Created by Edula Sai Pranav Reddy</div>
+
 </body>
 </html>
