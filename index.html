@@ -1,19 +1,125 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
+<meta charset="UTF-8">
 <title>PRANAV Verse</title>
-<link rel="stylesheet" href="style.css">
+
+<style>
+body{
+margin:0;
+font-family:Segoe UI;
+background:linear-gradient(120deg,#020617,#071a2f);
+color:white;
+}
+
+.nav{
+display:flex;
+justify-content:space-between;
+padding:20px 40px;
+background:#020617;
+}
+
+.logo{
+font-size:22px;
+font-weight:bold;
+color:#7c8cff;
+}
+
+.hero{
+text-align:center;
+margin-top:80px;
+}
+
+.hero h1{
+font-size:48px;
+margin-bottom:10px;
+}
+
+.hero p{
+opacity:.8;
+margin-bottom:30px;
+}
+
+.btn{
+padding:14px 28px;
+border:none;
+border-radius:10px;
+cursor:pointer;
+margin:10px;
+font-size:18px;
+}
+
+.primary{background:#5c6cff;color:white;}
+.secondary{background:#0f172a;color:white;}
+
+.section{
+margin-top:120px;
+text-align:center;
+}
+
+.card{
+background:#031c3a;
+padding:25px;
+border-radius:12px;
+width:260px;
+display:inline-block;
+margin:20px;
+}
+
+.footer{
+margin-top:120px;
+padding:40px;
+text-align:center;
+opacity:.6;
+}
+</style>
 </head>
+
 <body>
-<header>PRANAV Verse</header>
 
-<section class="hero">
-<h1>Build Real Projects, Not Tutorials</h1>
-<p>A platform where students explore and download real working projects</p>
-<a href="register.html"><button>Start Learning</button></a>
-<a href="login.html"><button>Login</button></a>
-</section>
+<div class="nav">
+<div class="logo">PRANAV Verse</div>
+<div>
+<a href="login.html"><button class="btn secondary">Login</button></a>
+<a href="register.html"><button class="btn secondary">Register</button></a>
+</div>
+</div>
 
-<div class="footer">Created by Edula Sai Pranav Reddy</div>
+<div class="hero">
+<h1>India's Student Project Platform</h1>
+<p>Explore real projects with source code, documentation & certificates</p>
+
+<a href="projects.html">
+<button class="btn primary">Browse Projects</button>
+</a>
+
+<a href="upload.html">
+<button class="btn secondary">Upload Project</button>
+</a>
+</div>
+
+<div class="section">
+<h2>What You Can Do</h2>
+
+<div class="card">
+<h3>Find Projects</h3>
+<p>Search AI, Web, Python & Final Year projects instantly</p>
+</div>
+
+<div class="card">
+<h3>Download Code</h3>
+<p>Get complete source code and documentation</p>
+</div>
+
+<div class="card">
+<h3>Get Certificate</h3>
+<p>Generate certificate after learning project</p>
+</div>
+</div>
+
+<div class="footer">
+Created by Edula Sai Pranav Reddy
+</div>
+
 </body>
 </html>
