@@ -92,7 +92,6 @@ document.getElementById("box").innerHTML=`
 </div>`;
 }
 
-/* Prevent empty live demo */
 window.checkLive = function(e,link){
 if(!link){
 e.preventDefault();
@@ -100,7 +99,6 @@ alert("Live demo not provided by author");
 }
 }
 
-/* Download project details */
 window.downloadPDF = function(){
 let p = window.currentProject;
 
@@ -132,6 +130,9 @@ loadProject();
 </head>
 
 <body>
+
+<!-- 🔥 NAVBAR MUST BE HERE -->
+<script src="js/navbar.js"></script>
 
 <header>Project Details</header>
 <div class="container" id="box">Loading project...</div>
