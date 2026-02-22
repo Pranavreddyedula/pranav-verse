@@ -5,6 +5,9 @@
 <link rel="stylesheet" href="style.css">
 
 <style>
+body{background:#071a2f;color:white;font-family:Segoe UI}
+header{background:#02142a;padding:18px;font-size:26px}
+
 .card{
     background:#031c3a;
     padding:25px;
@@ -25,9 +28,19 @@ button{
 button:hover{background:#6f7dff;}
 img{border-radius:14px;margin:15px 0;}
 h3{margin-top:25px;}
+.footer{text-align:center;margin:40px;opacity:.6}
 </style>
 
 <script type="module">
+
+/* 🔐 LOGIN PROTECTION */
+const user = localStorage.getItem("loggedUser");
+if(!user){
+    alert("Please login first to view project");
+    window.location.href = "login.html";
+}
+
+/* Firebase */
 import { db } from "./js/firebase.js";
 import { doc, getDoc } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
 
@@ -72,13 +85,14 @@ document.getElementById("box").innerHTML=`
 
 <button onclick="downloadPDF()">Download Project Details</button>
 
-<a href="certificate.html?user=${localStorage.getItem('loggedUser') || 'Guest'}&title=${encodeURIComponent(p.title)}">
+<a href="certificate.html?user=${user}&title=${encodeURIComponent(p.title)}">
 <button>Get Certificate</button>
 </a>
 
 </div>`;
 }
 
+/* Prevent empty live demo */
 window.checkLive = function(e,link){
 if(!link){
 e.preventDefault();
@@ -86,6 +100,7 @@ alert("Live demo not provided by author");
 }
 }
 
+/* Download project details */
 window.downloadPDF = function(){
 let p = window.currentProject;
 
@@ -112,6 +127,7 @@ a.click();
 }
 
 loadProject();
+
 </script>
 </head>
 
