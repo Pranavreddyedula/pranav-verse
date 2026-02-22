@@ -3,20 +3,50 @@
 <head>
 <title>Dashboard</title>
 <link rel="stylesheet" href="style.css">
+
+<style>
+body{background:#071a2f;color:white;font-family:Segoe UI}
+header{background:#02142a;padding:18px;font-size:26px}
+.container{text-align:center;margin-top:60px}
+button{padding:12px 20px;margin:12px;border:none;border-radius:8px;background:#5c6cff;color:white;cursor:pointer}
+button:hover{background:#6f7dff}
+.footer{text-align:center;margin:40px;opacity:.6}
+</style>
 </head>
+
 <body>
+
+<!-- 🔥 NAVBAR -->
+<script src="js/navbar.js"></script>
+
 <header>Dashboard</header>
 
 <div class="container">
 <h2>Welcome <span id="name"></span></h2>
-<a href="projects.html"><button>Browse Projects</button></a>
-<a href="admin.html"><button>Add Project (Admin)</button></a>
+
+<a href="projects.html">
+<button>Browse Projects</button>
+</a>
+
+<div id="adminPanel" style="display:none">
+<a href="upload.html">
+<button>Add Project (Admin)</button>
+</a>
+</div>
+
 </div>
 
 <script>
-name.innerText=localStorage.getItem("loggedUser");
+const user = localStorage.getItem("loggedUser");
+document.getElementById("name").innerText = user || "Guest";
+
+/* Show admin button only for you */
+if(user === "pranav" || localStorage.getItem("isAdmin")==="true"){
+document.getElementById("adminPanel").style.display="block";
+}
 </script>
 
 <div class="footer">Created by Edula Sai Pranav Reddy</div>
+
 </body>
 </html>
