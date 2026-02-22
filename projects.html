@@ -26,9 +26,18 @@ button{padding:8px 14px;background:#0a84ff;color:white;border:none;border-radius
 
 <script type="module">
 
+/* 🔐 LOGIN PROTECTION */
+const user = localStorage.getItem("loggedUser");
+if(!user){
+    alert("Please login first");
+    window.location.href = "login.html";
+}
+
+/* Firebase Imports */
 import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
 import { getFirestore, collection, getDocs } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
 
+/* Firebase Config */
 const firebaseConfig = {
   apiKey: "AIzaSyDAqqurQ5zb1iWdcnrFJp6XCgNE3YJfYKA",
   authDomain: "pranav-verse.firebaseapp.com",
@@ -43,13 +52,14 @@ const db = getFirestore(app);
 
 let allProjects = [];
 
+/* Load Projects */
 async function loadProjects(){
     const snap = await getDocs(collection(db,"projects"));
     allProjects=[];
 
     snap.forEach(doc=>{
         allProjects.push({
-            id: doc.id, // 🔥 REAL FIRESTORE ID
+            id: doc.id,
             ...doc.data()
         });
     });
@@ -57,6 +67,7 @@ async function loadProjects(){
     render();
 }
 
+/* Search + Render */
 window.render = function(){
     let q=(document.getElementById("search").value||"").toLowerCase();
     let list=document.getElementById("list");
